@@ -1,67 +1,85 @@
 # models.py
-import binascii
-import os
-from django.contrib.auth.models import AbstractUser, BaseUserManager
-from django.utils import timezone
+from django.contrib.auth.base_user import BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 
-class CustomUser(models.Model):
-    name = models.CharField(max_length=30, null=False, default="sample")
-    email = models.EmailField(unique=True, null=False, default='example@gmail.com')
-    height = models.FloatField(null=True, blank=True)
-    weight = models.FloatField(null=True, blank=True)
-    bmi = models.FloatField(null=True, blank=True)
-    password = models.CharField(max_length=16, null=False, default="12345678")
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name']
-
-    def __str__(self):
-        return self.email
-
-class CustomUserManager(BaseUserManager):
+class AppUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
-            raise ValueError('The Email field must be set')
+            raise ValueError('An email is required.')
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
-        user.save(using=self._db)
+        user.save()
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True.')
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
+
         return self.create_user(email, password, **extra_fields)
 
-class CustomToken(models.Model):
-    key = models.CharField(max_length=40, primary_key=True)
-    user = models.OneToOneField(CustomUser, related_name='auth_token', on_delete=models.CASCADE)
-    created = models.DateTimeField(default=timezone.now)
+class AppUser(AbstractBaseUser, PermissionsMixin):
+    email = models.EmailField(max_length=50, unique=True)
+    username = models.CharField(max_length=50)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=True)
 
-    def save(self, *args, **kwargs):
-        if not self.key:
-            self.key = self.generate_key()
-        return super().save(*args, **kwargs)
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
 
-    def generate_key(self):
-        return binascii.hexlify(os.urandom(20)).decode()
+    objects = AppUserManager()
 
-    class Meta:
-        ordering = ('-created',)
+    def __str__(self):
+        return self.username
+    
+    groups = models.ManyToManyField(
+        'auth.Group',
+        related_name='app_users',
+        related_query_name='app_user',
+        blank=True,
+        verbose_name='groups',
+        help_text='The groups this user belongs to.',
+    )
+    
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        related_name='app_users',
+        related_query_name='app_user',
+        blank=True,
+        verbose_name='user permissions',
+        help_text='Specific permissions for this user.',
+    )
 
 class Workout(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey('AppUser', null=True, on_delete=models.CASCADE, related_name='workouts')
     date = models.DateField()
     duration_minutes = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.user.username}'s Workout on {self.date}"
 
 class Exercise(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
 
+    def __str__(self):
+        return self.name
+
 class WorkoutExercise(models.Model):
-    workout = models.ForeignKey(Workout, on_delete=models.CASCADE)
-    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+    user = models.ForeignKey('AppUser', null=True, on_delete=models.CASCADE, related_name='workout_user')
+    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE, related_name='workout_exercises')
     sets = models.PositiveIntegerField()
     repetitions = models.PositiveIntegerField()
     weight = models.FloatField(null=True, blank=True)
+
+    def __str__(self):
+        if self.user:
+            return f"{self.user.username}'s Exercise - {self.exercise.name}"
+        else:
+            return f"Anonymous User's Exercise - {self.exercise.name}"

@@ -1,0 +1,56 @@
+.workout-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    
+}
+
+.workout {
+  max-height: 320px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.workout label {
+  color: #333;
+
+}
+  
+.workout-list {
+  text-align: start;
+  width: 310px;
+  max-height: 300px;  
+  border: 1px solid #ccc;
+  padding-top: 10px !important;
+  padding: 20px;
+  margin: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  overflow: scroll;
+}
+
+.workout-list li {
+  list-style: none;
+  list-style-type: none;
+  margin-bottom: 10px;
+
+}
+
+/* Optionally, if you want to style the scrollbar */
+.workout-list::-webkit-scrollbar {
+  display: none;
+  width: 8px;
+}
+
+.workout-list::-webkit-scrollbar-thumb {
+  background-color: #aaa;
+  border-radius: 4px;
+}
+
+.workout-list:hover::-webkit-scrollbar {
+  display: block;
+  width: 8px;
+}

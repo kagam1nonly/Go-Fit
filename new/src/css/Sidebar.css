@@ -1,0 +1,99 @@
+/* Sidebar.css */
+* {
+    font-family: 'Roboto', sans-serif;
+}
+
+.sidebar-container {
+    display: flex;
+    align-items: center;
+    margin-top: .5rem;
+  }
+  
+  .logo {
+    width: 75px;
+    height: 75px;
+    margin-left: .5rem; /* Adjust the margin as needed */
+  }
+  
+  .gofit {
+    display: flex;
+    color: #fff;
+    font-size: 2rem; /* Adjust the font size as needed */
+    text-align: center;
+    align-items: center;
+    margin-left: 1rem; /* Adjust the margin as needed */
+  }
+  
+  
+  .sidebar {
+    width: 200px;
+    height: 80%;
+    background-color: #333;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: start;
+    padding-top: 20px;
+    margin: 7rem .5rem;
+    border-radius: .6rem;
+  }
+  
+  /* Rest of your styles... */
+  
+
+.info-avatar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.avatar-icon {
+    margin-right: 10px;
+}
+
+.info-avatar img {
+    width: 50px;
+    height: auto;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.info-name {
+    color: #fff;
+    font-size: 1.3rem;
+}
+
+.navigation {
+    margin-top: 20px;
+    font-size: 1.4rem;
+}
+
+.nav-list {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    padding: 0;
+}
+
+.nav-list li {
+    margin-bottom: 10px;
+    color: #fff;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.nav-list li:hover {
+    color: #00f;
+}
+
+.logout {
+    display: flex;
+    align-items: center;
+}
+
+.setting {
+    margin-left: 2px;
+}
