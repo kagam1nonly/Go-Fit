@@ -1,0 +1,62 @@
+/* AccountCreationForm.css or your custom CSS file */
+
+.signup-card {
+    max-width: 300px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+}
+
+.signup-card h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.signup-card form {
+    display: flex;
+    flex-direction: column;
+}
+
+.signup-card label {
+    color: #000000;
+    margin-bottom: 10px;
+}
+
+.signup-card input {
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.signup-card button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.signup-card button:hover {
+    background-color: #45a049;
+}
+
+.error-message {
+    color: #f00;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.error-message.show {
+    display: block;
+}
